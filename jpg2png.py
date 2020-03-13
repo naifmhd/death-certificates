@@ -40,7 +40,7 @@ def png2txt(png_path, txt_path, storage_client, temp_local_filename):
 
     print("OCR processing {}".format(png_path))
     image.source.image_uri = png_path
-    response = vision_client.text_detection(image=image)
+    response = vision_client.text_detection(image=image,image_context={"language_hints": ["dv"]})
 
     text = response.text_annotations[0].description
     print('temt')
