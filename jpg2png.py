@@ -43,12 +43,13 @@ def png2txt(png_path, txt_path, storage_client, temp_local_filename):
     response = vision_client.text_detection(image=image)
 
     text = response.text_annotations[0].description
-    print('t')
+    print('temt')
     print(txt_path)
     print(temp_local_filename)
     tmp_filename = txt_path.split("/")[-1]
 
-    temp_txt = "tmp/{}".format(tmp_filename)
+    # temp_txt = "tmp/{}".format(tmp_filename)
+    temp_txt = temp_local_filename
     with open(temp_txt, "w") as f:
         f.write(text)
         f.close()
@@ -74,7 +75,6 @@ def jpg2png2txt(current_blob,
         os.makedirs(temp_directory)
 
     file_name = current_blob.name
-    print('ddd')
     handler, temp_local_filename = tempfile.mkstemp()
 
     current_blob.download_to_filename(temp_local_filename)
