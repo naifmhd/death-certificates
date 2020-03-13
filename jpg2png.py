@@ -43,6 +43,7 @@ def png2txt(png_path, txt_path, storage_client):
     response = vision_client.text_detection(image=image)
 
     text = response.text_annotations[0].description
+    print(txt_path)
     tmp_filename = txt_path.split("/")[-1]
 
     temp_txt = "tmp/{}".format(tmp_filename)
