@@ -13,6 +13,7 @@ def hello_gcs_generic(data, context):
     """
 
     print('Event ID: {}'.format(context.event_id))
+    print('naif')
     print('Event type: {}'.format(context.event_type))
     print('Bucket: {}'.format(data['bucket']))
     print('File: {}'.format(data['name']))
