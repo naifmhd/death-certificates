@@ -175,6 +175,7 @@ def jpg2png2txt(current_blob,
 
 
 def convert_jpgs(data, context):
+    print('Converts jpgs to png')
     file_data = data
 
     file_name = file_data['name']
@@ -185,7 +186,7 @@ def convert_jpgs(data, context):
     blob = storage_client.bucket(bucket_name).get_blob(file_name)
     blob_uri = f'gs://{bucket_name}/{file_name}'
     blob_source = {'source': {'image_uri': blob_uri}}
-
+    print(blob_uri)
     """Converts jpgs to png.
 
     Args:
