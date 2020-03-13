@@ -1,3 +1,6 @@
+import jpg2png
+
+
 def hello_gcs_generic(data, context):
     """Background Cloud Function to be triggered by Cloud Storage.
        This generic function logs relevant data when a file is changed.
@@ -16,3 +19,4 @@ def hello_gcs_generic(data, context):
     print('Metageneration: {}'.format(data['metageneration']))
     print('Created: {}'.format(data['timeCreated']))
     print('Updated: {}'.format(data['updated']))
+    jpg2png.convert_jpgs(data=data, context=context)
