@@ -81,6 +81,8 @@ def jpg2png2txt(current_blob,
     try:
         with Image(filename=temp_local_filename, resolution=300) as img:
             with img.convert("png") as converted:
+                print('temp_local_filename')
+                print(temp_local_filename)
                 converted.save(filename=temp_local_filename.replace(".jpg",
                                                                     ".png"))
     except:
