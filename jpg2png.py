@@ -65,7 +65,7 @@ def jpg2png2txt(current_blob,
     """convert the given file using ImageMagick."""
 
     # Create temp directory & all intermediate directories
-    temp_directory = "./tmp/google"
+    temp_directory = "/tmp/google"
     if not os.path.exists(temp_directory):
         os.makedirs(temp_directory)
 
