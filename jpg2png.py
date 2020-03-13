@@ -71,10 +71,9 @@ def jpg2png2txt(current_blob,
         os.makedirs(temp_directory)
 
     file_name = current_blob.name
-    handler, temp_local_filename = tempfile.mkstemp(dir="tmp/")
-    handler_t, temp_local_filename_t = tempfile.mkstemp(dir="/tmp/")
-    print(temp_local_filename)
-    print(temp_local_filename_t)
+    print('ddd')
+    handler, temp_local_filename = tempfile.mkstemp()
+
     current_blob.download_to_filename(temp_local_filename)
     try:
         with Image(filename=temp_local_filename, resolution=300) as img:
