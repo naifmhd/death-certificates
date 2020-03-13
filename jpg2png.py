@@ -66,6 +66,7 @@ def jpg2png2txt(current_blob,
 
     # Create temp directory & all intermediate directories
     temp_directory = "/tmp/google"
+    print(temp_directory)
     if not os.path.exists(temp_directory):
         os.makedirs(temp_directory)
 
