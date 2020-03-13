@@ -31,7 +31,7 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-def png2txt(png_path, txt_path, storage_client):
+def png2txt(png_path, txt_path, storage_client, temp_local_filename):
     """convert the png file to txt using OCR."""
 
     vision_client = vision.ImageAnnotatorClient()
@@ -43,7 +43,9 @@ def png2txt(png_path, txt_path, storage_client):
     response = vision_client.text_detection(image=image)
 
     text = response.text_annotations[0].description
+    print('t')
     print(txt_path)
+    print(temp_local_filename)
     tmp_filename = txt_path.split("/")[-1]
 
     temp_txt = "tmp/{}".format(tmp_filename)
@@ -94,7 +96,8 @@ def jpg2png2txt(current_blob,
     # Convert png to txt
     png2txt(png_path=png_path,
             txt_path=txt_path,
-            storage_client=storage_client)
+            storage_client=storage_client,
+            temp_local_filename=temp_local_filename)
 
     # Delete the temporary file.
     os.remove(temp_local_filename)
