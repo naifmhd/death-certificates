@@ -109,7 +109,7 @@ def predict(main_project_id,
 
     # input_bucket_name = input_path.replace('gs://', '').split('/')[0]
     input_txt_folder = f"gs://{input_bucket}/txt"
-
+    print(input_txt_folder)
     list_fields = [x['field_name']
                    for x in config["model_ner"]["fields_to_extract"]]
     list_fields.remove('gcs_path')
