@@ -140,7 +140,7 @@ def predict(main_project_id,
     # schema.append(bigquery.SchemaField(field, 'STRING', mode='NULLABLE'))
     print('Saving to db\n')
     utils.save_to_db(
-        result=result,
+        row_to_insert=result,
         config=config)
 
     print('Entity extraction finished.\n')

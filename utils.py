@@ -125,7 +125,7 @@ def save_to_db(row_to_insert, config):
       schema: Schema of the data (list of `SchemaField`). Required if we create_table=True.
     """
     # bq_client = bigquery.Client.from_service_account_json(service_account)
-
+    print(row_to_insert['file'])
     db = sqlalchemy.create_engine(
         # Equivalent URL:
         # mysql+pymysql://<db_user>:<db_pass>@/<db_name>?unix_socket=/cloudsql/<cloud_sql_instance_name>
