@@ -40,7 +40,8 @@ def png2txt(png_path, txt_path, storage_client, temp_local_filename):
 
     print("OCR processing {}".format(png_path))
     image.source.image_uri = png_path
-    response = vision_client.text_detection(image=image,image_context={"language_hints": ["dv"]})
+    response = vision_client.text_detection(
+        image=image, image_context={"language_hints": ["dv"]})
 
     text = response.text_annotations[0].description
     print('temt')
@@ -76,13 +77,13 @@ def jpg2png2txt(current_blob,
 
     file_name = current_blob.name
     handler, temp_local_filename = tempfile.mkstemp()
-
+    print('temp_local_filename')
+    print(temp_local_filename)
+    print('temp_local_filename')
     current_blob.download_to_filename(temp_local_filename)
     try:
         with Image(filename=temp_local_filename, resolution=300) as img:
             with img.convert("png") as converted:
-                print('temp_local_filename')
-                print(temp_local_filename)
                 converted.save(filename=temp_local_filename.replace(".jpg",
                                                                     ".png"))
     except:
@@ -92,6 +93,9 @@ def jpg2png2txt(current_blob,
     match = re.match(r"gs://([^/]+)/(.+)", png_path)
     new_bucket_name = match.group(1)
     new_file_name = match.group(2)
+    print('new_bucket_name')
+    print(new_bucket_name)
+    print(new_file_name)
     new_blob = storage_client.get_bucket(new_bucket_name).blob(new_file_name)
     new_blob.upload_from_filename(temp_local_filename)
 
@@ -182,7 +186,7 @@ def jpg2png2txt(current_blob,
 #     log_file.close()
 
 
-def convert_jpgs(data, context):
+def convert_jpgs(data, context, output_bucket):
     print('Converts jpgs to png')
     file_data = data
 
@@ -201,8 +205,8 @@ def convert_jpgs(data, context):
       input_path: Folder containing the jpgs (e.g. gs://...)
       service_account: API key needed to access Cloud storage
     """
-    png_output_folder = f"gs://{bucket_name}/png"
-    txt_output_folder = f"gs://{bucket_name}/txt"
+    png_output_folder = f"gs://{output_bucket}/png"
+    txt_output_folder = f"gs://{output_bucket}/txt"
     # storage_client = storage.Client.from_service_account_json(service_acct)
     # blobs = storage_client.list_blobs(folder_to_enumerate, prefix='/')
 

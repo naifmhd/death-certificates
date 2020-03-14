@@ -20,4 +20,6 @@ def hello_gcs_generic(data, context):
     print('Metageneration: {}'.format(data['metageneration']))
     print('Created: {}'.format(data['timeCreated']))
     print('Updated: {}'.format(data['updated']))
-    jpg2png.convert_jpgs(data=data, context=context)
+    output_bucket = 'processed_kashunamaadhu'
+    jpg2png.convert_jpgs(data=data, context=context,
+                         output_bucket=output_bucket)
