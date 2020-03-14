@@ -110,7 +110,7 @@ def download_string(full_path):
     return byte_stream
 
 
-def save_to_db(row_to_insert, config):
+def save_to_db(row_to_insert, png_path, config):
     """Writes data to a BigQuery dataset.
 
     Args:
@@ -126,6 +126,7 @@ def save_to_db(row_to_insert, config):
     """
     # bq_client = bigquery.Client.from_service_account_json(service_account)
     print(row_to_insert['file'])
+    temp_path = png_path.split("/")[-1]
     db = sqlalchemy.create_engine(
         # Equivalent URL:
         # mysql+pymysql://<db_user>:<db_pass>@/<db_name>?unix_socket=/cloudsql/<cloud_sql_instance_name>
@@ -156,7 +157,7 @@ def save_to_db(row_to_insert, config):
         # Using a with statement ensures that the connection is always released
         # back into the pool at the end of statement (even if an error occurs)
         with db.connect() as conn:
-            conn.execute(stmt, file=row_to_insert['file'], name=row_to_insert['name'], address=row_to_insert['address'], age=row_to_insert['age'],
+            conn.execute(stmt, file=temp_path, name=row_to_insert['name'], address=row_to_insert['address'], age=row_to_insert['age'],
                          location=row_to_insert['location'], time=row_to_insert['time'], death_date=row_to_insert['death_date'], contact_number=row_to_insert['contact_number'])
     except Exception as e:
         print("Unable to successfully cast vote! Please check the ")

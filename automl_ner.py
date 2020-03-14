@@ -88,6 +88,7 @@ def run_automl_single(ocr_path,
 def predict(main_project_id,
             input_bucket,
             input_file,
+            png_path,
             model_id,
             compute_region,
             config):
@@ -141,6 +142,7 @@ def predict(main_project_id,
     print('Saving to db\n')
     utils.save_to_db(
         row_to_insert=result,
+        png_path=png_path,
         config=config)
 
     print('Entity extraction finished.\n')

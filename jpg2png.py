@@ -64,6 +64,7 @@ def png2txt(png_path, txt_path, storage_client, temp_local_filename, config):
         main_project_id=config["pipeline_project"]["project_id"],
         input_bucket=new_bucket_name,
         input_file=new_file_name,
+        png_path=png_path,
         model_id=config["model_ner"]["model_id"],
         compute_region=config["pipeline_project"]["region"],
         config=config)
@@ -107,6 +108,8 @@ def jpg2png2txt(current_blob,
             config=config)
 
     # Delete the temporary file.
+    print("Deleting the uploaded jpg")
+    current_blob.delete()
     os.remove(temp_local_filename)
 
 
