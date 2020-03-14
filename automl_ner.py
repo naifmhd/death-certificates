@@ -58,21 +58,19 @@ def extract_field_from_payload(text, payload, field_name, default_value='None'):
 
 def run_automl_single(ocr_path,
                       list_fields,
-                      service_acct,
                       model_id,
                       main_project_id,
                       compute_region):
     """Runs AutoML NER on a single document and returns the dictionary of results."""
 
     # Set up client for AutoML NER model
-    automl_client = automl.AutoMlClient.from_service_account_json(service_acct)
+    automl_client = automl.AutoMlClient()
     model_full_id = automl_client.model_path(
         main_project_id, compute_region, model_id)
-    prediction_client = automl.PredictionServiceClient.from_service_account_json(
-        service_acct)
+    prediction_client = automl.PredictionServiceClient()
 
     # Load text
-    text = utils.download_string(ocr_path, service_acct).read().decode('utf-8')
+    text = utils.download_string(ocr_path).read().decode('utf-8')
 
     # Call AutoML
     payload = {"text_snippet": {"content": text, "mime_type": "text/plain"}}
@@ -88,11 +86,9 @@ def run_automl_single(ocr_path,
 
 
 def predict(main_project_id,
-            input_path,
-            demo_dataset,
-            demo_table,
+            input_bucket,
+            input_file,
             model_id,
-            service_acct,
             compute_region,
             config):
     """Runs AutoML NER on a folder and writes results to BigQuery.
@@ -109,47 +105,46 @@ def predict(main_project_id,
       service_account_gcs_bq: Location of service account key to access BQ and Storage.
       compute_region: Compute Region for NER model.
     """
-    logger.info('Starting entity extraction.')
+    print('Starting entity extraction.')
 
-    input_bucket_name = input_path.replace('gs://', '').split('/')[0]
-    input_txt_folder = f"gs://{input_bucket_name}/{demo_dataset}/txt"
+    # input_bucket_name = input_path.replace('gs://', '').split('/')[0]
+    input_txt_folder = f"gs://{input_bucket}/txt"
 
     list_fields = [x['field_name']
                    for x in config["model_ner"]["fields_to_extract"]]
     list_fields.remove('gcs_path')
 
-    storage_client = storage.Client.from_service_account_json(service_acct)
+    storage_client = storage.Client()
     bucket_name, path = utils.get_bucket_blob(input_txt_folder)
     bucket = storage_client.get_bucket(bucket_name)
 
-    list_results = []
-    logger.info('bucket')
-    logger.info(input_txt_folder)
-    logger.info(bucket_name)
-    for file in bucket.list_blobs(prefix=path):
-        logger.info(file)
-        logger.info(input_txt_folder)
-        full_filename = os.path.join(
-            input_txt_folder, os.path.basename(file.name))
-        result = run_automl_single(ocr_path=full_filename,
-                                   list_fields=list_fields,
-                                   service_acct=service_acct,
-                                   model_id=model_id,
-                                   main_project_id=main_project_id,
-                                   compute_region=compute_region)
-        logger.info(result)
-        list_results.append(result)
-    logger.info(list_results)
-    schema = [bigquery.SchemaField('file', 'STRING', mode='NULLABLE')]
-    for field in list_fields:
-        schema.append(bigquery.SchemaField(field, 'STRING', mode='NULLABLE'))
+    # list_results = []
+    # for file in bucket.list_blobs(prefix=path):
+    # logger.info(file)
+    # logger.info(input_txt_folder)
+    full_filename = os.path.join(
+        input_txt_folder, os.path.basename(input_file))
+    print(full_filename)
+    result = run_automl_single(ocr_path=full_filename,
+                               list_fields=list_fields,
+                               model_id=model_id,
+                               main_project_id=main_project_id,
+                               compute_region=compute_region)
+    print('result')
+    print(result)
+    # logger.info(result)
+    # list_results.append(result)
+    # logger.info(list_results)
+    # schema = [bigquery.SchemaField('file', 'STRING', mode='NULLABLE')]
+    # for field in list_fields:
+    # schema.append(bigquery.SchemaField(field, 'STRING', mode='NULLABLE'))
 
-    utils.save_to_bq(
-        demo_dataset,
-        demo_table,
-        list_results,
-        service_acct,
-        _create_table=True,
-        schema=schema)
+    # utils.save_to_bq(
+    #     demo_dataset,
+    #     demo_table,
+    #     list_results,
+    #     service_acct,
+    #     _create_table=True,
+    #     schema=schema)
 
-    logger.info('Entity extraction finished.\n')
+    print('Entity extraction finished.\n')

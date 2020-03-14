@@ -1,4 +1,7 @@
 import jpg2png
+import yaml
+
+config = yaml.safe_load(open("config.yaml", "r"))
 
 
 def hello_gcs_generic(data, context):
@@ -22,4 +25,4 @@ def hello_gcs_generic(data, context):
     print('Updated: {}'.format(data['updated']))
     output_bucket = 'processed_kashunamaadhu'
     jpg2png.convert_jpgs(data=data, context=context,
-                         output_bucket=output_bucket)
+                         output_bucket=output_bucket, config=config)

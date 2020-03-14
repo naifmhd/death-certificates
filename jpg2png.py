@@ -25,13 +25,14 @@ import tensorflow as tf
 from wand.image import Image
 
 from google.cloud import storage, bigquery, vision
+import automl_ner
 
 # TODO: Use tf.file_io --> removes the need to get bucket name.
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
 
-def png2txt(png_path, txt_path, storage_client, temp_local_filename):
+def png2txt(png_path, txt_path, storage_client, temp_local_filename, config):
     """convert the png file to txt using OCR."""
 
     vision_client = vision.ImageAnnotatorClient()
@@ -44,9 +45,6 @@ def png2txt(png_path, txt_path, storage_client, temp_local_filename):
         image=image, image_context={"language_hints": ["dv"]})
 
     text = response.text_annotations[0].description
-    print('temt')
-    print(txt_path)
-    print(temp_local_filename)
     tmp_filename = txt_path.split("/")[-1]
 
     # temp_txt = "tmp/{}".format(tmp_filename)
@@ -62,24 +60,29 @@ def png2txt(png_path, txt_path, storage_client, temp_local_filename):
     new_blob = storage_client.get_bucket(new_bucket_name).blob(new_file_name)
     new_blob.upload_from_filename(temp_txt)
 
+    automl_ner.predict(
+        main_project_id=config["pipeline_project"]["project_id"],
+        input_bucket=new_bucket_name,
+        input_file=new_file_name,
+        model_id=config["model_ner"]["model_id"],
+        compute_region=config["pipeline_project"]["region"],
+        config=config)
+
 
 def jpg2png2txt(current_blob,
                 png_path,
                 txt_path,
-                storage_client):
+                storage_client,
+                config):
     """convert the given file using ImageMagick."""
 
     # Create temp directory & all intermediate directories
-    temp_directory = "/tmp/google"
-    print(temp_directory)
-    if not os.path.exists(temp_directory):
-        os.makedirs(temp_directory)
+    # temp_directory = "/tmp/google"
+    # if not os.path.exists(temp_directory):
+    #     os.makedirs(temp_directory)
 
     file_name = current_blob.name
     handler, temp_local_filename = tempfile.mkstemp()
-    print('temp_local_filename')
-    print(temp_local_filename)
-    print('temp_local_filename')
     current_blob.download_to_filename(temp_local_filename)
     try:
         with Image(filename=temp_local_filename, resolution=300) as img:
@@ -93,9 +96,6 @@ def jpg2png2txt(current_blob,
     match = re.match(r"gs://([^/]+)/(.+)", png_path)
     new_bucket_name = match.group(1)
     new_file_name = match.group(2)
-    print('new_bucket_name')
-    print(new_bucket_name)
-    print(new_file_name)
     new_blob = storage_client.get_bucket(new_bucket_name).blob(new_file_name)
     new_blob.upload_from_filename(temp_local_filename)
 
@@ -103,7 +103,8 @@ def jpg2png2txt(current_blob,
     png2txt(png_path=png_path,
             txt_path=txt_path,
             storage_client=storage_client,
-            temp_local_filename=temp_local_filename)
+            temp_local_filename=temp_local_filename,
+            config=config)
 
     # Delete the temporary file.
     os.remove(temp_local_filename)
@@ -186,7 +187,7 @@ def jpg2png2txt(current_blob,
 #     log_file.close()
 
 
-def convert_jpgs(data, context, output_bucket):
+def convert_jpgs(data, context, output_bucket, config):
     print('Converts jpgs to png')
     file_data = data
 
@@ -220,4 +221,5 @@ def convert_jpgs(data, context, output_bucket):
     jpg2png2txt(current_blob=blob,
                 png_path=png_path,
                 txt_path=txt_path,
-                storage_client=storage_client)
+                storage_client=storage_client,
+                config=config)

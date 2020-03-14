@@ -18,7 +18,7 @@
 pipeline_project:
     project_id: "death-certificate" # TODO(user): Set to your Project ID.
     region: "us-central1" # Currently (Aug 2019) only "us-central1" supported.
-    demo_sample_data: "gs://test-death-certificates" # TODO(user): GCS location of sample patents to process for demo
+    demo_sample_data: "gs://processed_kashunamaadhu" # TODO(user): GCS location of sample patents to process for demo
     demo_dataset_id: "extracted_death_details" # TODO(user): BQ dataset to store information collected for demo
   
   # Parameters for creation of a service account with get_service_acct.sh.
