@@ -140,7 +140,6 @@ def predict(main_project_id,
     # schema.append(bigquery.SchemaField(field, 'STRING', mode='NULLABLE'))
     print('Saving to db\n')
     utils.save_to_db(
-        data_table=config["mysql"]["table"],
         result=result,
         config=config)
 

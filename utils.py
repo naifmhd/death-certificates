@@ -110,7 +110,7 @@ def download_string(full_path):
     return byte_stream
 
 
-def save_to_db(table, row_to_insert, config):
+def save_to_db(row_to_insert, config):
     """Writes data to a BigQuery dataset.
 
     Args:
