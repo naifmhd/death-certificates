@@ -20,7 +20,12 @@ pipeline_project:
   region: "us-central1" # Currently (Aug 2019) only "us-central1" supported.
   demo_sample_data: "gs://processed_kashunamaadhu" # TODO(user): GCS location of sample patents to process for demo
   demo_dataset_id: "extracted_death_details" # TODO(user): BQ dataset to store information collected for demo
-
+mysql:
+  instance: "death-certificate:us-central1:death-certificate"
+  user: "death"
+  password: "P5qm0tIcg9Nw85Ho"
+  database: "death"
+  table: "data"
 # Parameters for creation of a service account with get_service_acct.sh.
 service_acct:
   creator_user_id: "naifmhd@gmail.com" # TODO(user): Set to your GCP login email.

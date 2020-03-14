@@ -138,13 +138,10 @@ def predict(main_project_id,
     # schema = [bigquery.SchemaField('file', 'STRING', mode='NULLABLE')]
     # for field in list_fields:
     # schema.append(bigquery.SchemaField(field, 'STRING', mode='NULLABLE'))
-
-    # utils.save_to_bq(
-    #     demo_dataset,
-    #     demo_table,
-    #     list_results,
-    #     service_acct,
-    #     _create_table=True,
-    #     schema=schema)
+    print('Saving to db\n')
+    utils.save_to_db(
+        data_table=config["mysql"]["table"],
+        result=result,
+        config=config)
 
     print('Entity extraction finished.\n')
