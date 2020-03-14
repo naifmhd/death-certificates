@@ -16,50 +16,49 @@
 # The project the Document AI pipeline will be built and hosted in.
 # TODO(michaelsherman): Make sure no line is past 80 characters (per bash style)
 pipeline_project:
-    project_id: "death-certificate" # TODO(user): Set to your Project ID.
-    region: "us-central1" # Currently (Aug 2019) only "us-central1" supported.
-    demo_sample_data: "gs://processed_kashunamaadhu" # TODO(user): GCS location of sample patents to process for demo
-    demo_dataset_id: "extracted_death_details" # TODO(user): BQ dataset to store information collected for demo
-  
-  # Parameters for creation of a service account with get_service_acct.sh.
-  service_acct:
-    creator_user_id: "naifmhd@gmail.com" # TODO(user): Set to your GCP login email.
-    acct_name: "death-service-acct"
-    acct_description: "Service-account-for-death-demo"
-    acct_display_name: "Death-Demo-Service-Account"
-    key_path: "$HOME/keys/death-demo-service-acct.json"
-  
-  # TODO(michaelsherman): Each of these should just be a BQ proj.dataset.table, they should
-  #   be as independent as possible.
-  # TODO(michaelsherman): Fields should be specified for all models, like NER is.
-  pdp_project:
-    project_id: "death-certificate"
-    dataset_id: "labeled_certificates"
-    bucket_name: "sample-certificates"
-    image_table_id: "extracted_data"
-    objdetect_table_id: "figures"
-    text_table_id: "invention_types"
-    ner_table_id: "extracted_data"
-  model_imgclassifier:
-    model_id: # 'TODO(user): replace with model id when training is complete
-    demo_table_id: "document_classification"
-  model_objdetect:
-    model_id: # 'TODO(user): replace with model id when training is complete
-    demo_table_id: "object_detection"
-  model_textclassifier:
-    model_id: # 'TODO(user): replace with model id when training is complete
-    demo_table_id: "subject_classification"
-  model_ner:
-    model_id: "TEN4048151124820099072" # 'TODO(user): replace with model id when training is complete
-    demo_table_id: "ner_results"
-    fields_to_extract:
-      - field_name: "gcs_path"
-      - field_name: "name"
-      - field_name: "address"
-      - field_name: "age"
-      - field_name: "location"
-      - field_name: "time"
-      - field_name: "death_date"
-      - field_name: "prayer_date"
-      - field_name: "contact_number"
-  
+  project_id: "death-certificate" # TODO(user): Set to your Project ID.
+  region: "us-central1" # Currently (Aug 2019) only "us-central1" supported.
+  demo_sample_data: "gs://processed_kashunamaadhu" # TODO(user): GCS location of sample patents to process for demo
+  demo_dataset_id: "extracted_death_details" # TODO(user): BQ dataset to store information collected for demo
+
+# Parameters for creation of a service account with get_service_acct.sh.
+service_acct:
+  creator_user_id: "naifmhd@gmail.com" # TODO(user): Set to your GCP login email.
+  acct_name: "death-service-acct"
+  acct_description: "Service-account-for-death-demo"
+  acct_display_name: "Death-Demo-Service-Account"
+  key_path: "$HOME/keys/death-demo-service-acct.json"
+
+# TODO(michaelsherman): Each of these should just be a BQ proj.dataset.table, they should
+#   be as independent as possible.
+# TODO(michaelsherman): Fields should be specified for all models, like NER is.
+pdp_project:
+  project_id: "death-certificate"
+  dataset_id: "labeled_certificates"
+  bucket_name: "sample-certificates"
+  image_table_id: "extracted_data"
+  objdetect_table_id: "figures"
+  text_table_id: "invention_types"
+  ner_table_id: "extracted_data"
+model_imgclassifier:
+  model_id: # 'TODO(user): replace with model id when training is complete
+  demo_table_id: "document_classification"
+model_objdetect:
+  model_id: # 'TODO(user): replace with model id when training is complete
+  demo_table_id: "object_detection"
+model_textclassifier:
+  model_id: # 'TODO(user): replace with model id when training is complete
+  demo_table_id: "subject_classification"
+model_ner:
+  model_id: "TEN4048151124820099072" # 'TODO(user): replace with model id when training is complete
+  demo_table_id: "ner_results"
+  fields_to_extract:
+    - field_name: "gcs_path"
+    - field_name: "name"
+    - field_name: "address"
+    - field_name: "age"
+    - field_name: "location"
+    - field_name: "time"
+    - field_name: "death_date"
+    - field_name: "prayer_date"
+    - field_name: "contact_number"
