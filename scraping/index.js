@@ -117,7 +117,7 @@ exports.subscribe = pubsubMessage => {
       }
     };
 
-    downloadAll();
+    await downloadAll();
   } catch (error) {
     console.log(error);
   }
