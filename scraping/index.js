@@ -4,7 +4,7 @@ const path = require("path");
 const fs = require('fs');
 const {promisify} = require('util');
 const {storage} = require('@google-cloud/storage');
-exports.subscribe = pubsubMessage => {
+exports.subscribe = async pubsubMessage => {
   // Print out the data from Pub/Sub, to prove that it worked
   try {
     const scrapeImgUrls = async () => {
