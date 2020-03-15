@@ -9,8 +9,28 @@ exports.subscribe = pubsubMessage => {
   try {
     const scrapeImgUrls = async () => {
       try {
-        const browser = await puppeteer.launch();
+        const PUPPETEER_OPTIONS = {
+            headless: true,
+            args: [
+              '--disable-gpu',
+              '--disable-dev-shm-usage',
+              '--disable-setuid-sandbox',
+              '--timeout=30000',
+              '--no-first-run',
+              '--no-sandbox',
+              '--no-zygote',
+              '--single-process',
+              "--proxy-server='direct://'",
+              '--proxy-bypass-list=*',
+              '--deterministic-fetch',
+            ],
+          };
+
+        const browser = await puppeteer.launch(PUPPETEER_OPTIONS);
         const page = await browser.newPage();
+        await page.setUserAgent(
+            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36'
+          );
         await page.goto("https://www.facebook.com/pg/KashuNamaadhuMV/photos");
 
         const photos = await page.evaluate(() => {
