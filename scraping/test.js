@@ -3,7 +3,7 @@ const download = require("image-downloader");
 const path = require("path");
 const fs = require('fs');
 const {promisify} = require('util');
-const {Storage} = require('@google-cloud/storage');
+const {storage} = require('@google-cloud/storage');
 
 void (async () => {
   try {
