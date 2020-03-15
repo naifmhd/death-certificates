@@ -15,14 +15,6 @@ def hello_gcs_generic(data, context):
         None; the output is written to Stackdriver Logging
     """
 
-    print('Event ID: {}'.format(context.event_id))
-    print('naif')
-    print('Event type: {}'.format(context.event_type))
-    print('Bucket: {}'.format(data['bucket']))
-    print('File: {}'.format(data['name']))
-    print('Metageneration: {}'.format(data['metageneration']))
-    print('Created: {}'.format(data['timeCreated']))
-    print('Updated: {}'.format(data['updated']))
     output_bucket = 'processed_kashunamaadhu'
     jpg2png.convert_jpgs(data=data, context=context,
                          output_bucket=output_bucket, config=config)
