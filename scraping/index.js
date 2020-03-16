@@ -73,7 +73,7 @@ exports.subscribe = async pubsubMessage => {
       try {
         const { filename } = await download.image(options);
         const tempLocalPath = `/tmp/${path.basename(filename)}`;
-        const bucketName = "processed_kashunamaadhu";
+        const bucketName = "kashunamaadhu";
         // Upload result to a different bucket, to avoid re-triggering this function.
         const bucket = storage.bucket(bucketName);
 
