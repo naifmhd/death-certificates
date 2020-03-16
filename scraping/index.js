@@ -12,17 +12,17 @@ exports.subscribe = async pubsubMessage => {
         const PUPPETEER_OPTIONS = {
           headless: true,
           args: [
-            // "--disable-gpu",
-            // "--disable-dev-shm-usage",
-            // "--disable-setuid-sandbox",
-              '--timeout=60000',
+            "--disable-gpu",
+            "--disable-dev-shm-usage",
+            "--disable-setuid-sandbox",
+            "--timeout=60000",
             "--no-first-run",
             "--no-sandbox",
-            // "--no-zygote",
-            // "--single-process",
-            // "--proxy-server='direct://'",
-            // "--proxy-bypass-list=*",
-            // "--deterministic-fetch"
+            "--no-zygote",
+            "--single-process",
+            "--proxy-server='direct://'",
+            "--proxy-bypass-list=*",
+            "--deterministic-fetch"
           ]
         };
 
@@ -70,7 +70,7 @@ exports.subscribe = async pubsubMessage => {
 
     const downloadImg = async (options = {}) => {
       try {
-          console.log(options)
+        console.log(options);
         const { filename } = await download.image(options);
         const tempLocalPath = `/tmp/${path.basename(filename)}`;
         const bucketName = "processed_kashunamaadhu";
