@@ -15,7 +15,7 @@ exports.subscribe = async pubsubMessage => {
               '--disable-gpu',
               '--disable-dev-shm-usage',
               '--disable-setuid-sandbox',
-              '--timeout=30000',
+            //   '--timeout=30000',
               '--no-first-run',
               '--no-sandbox',
               '--no-zygote',
