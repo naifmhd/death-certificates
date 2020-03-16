@@ -81,7 +81,7 @@ exports.subscribe = async pubsubMessage => {
         console.log('filename')
         console.log(filename)
         console.log(tempLocalPath)
-        const temp = filename.split('');
+        const temp = filename.split('/');
         const lastItem = temp[temp.length - 1]
         console.log(lastItem)
         const gcsPath = `gs://${bucketName}/${filename}`;
