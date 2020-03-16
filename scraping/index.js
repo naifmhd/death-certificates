@@ -1,36 +1,36 @@
 const puppeteer = require("puppeteer");
 const download = require("image-downloader");
 const path = require("path");
-const fs = require('fs');
-const {promisify} = require('util');
-const {storage} = require('@google-cloud/storage');
+const fs = require("fs");
+const { promisify } = require("util");
+const { storage } = require("@google-cloud/storage");
 exports.subscribe = async pubsubMessage => {
   // Print out the data from Pub/Sub, to prove that it worked
   try {
     const scrapeImgUrls = async () => {
       try {
         const PUPPETEER_OPTIONS = {
-            headless: true,
-            args: [
-              '--disable-gpu',
-              '--disable-dev-shm-usage',
-              '--disable-setuid-sandbox',
-            //   '--timeout=30000',
-              '--no-first-run',
-              '--no-sandbox',
-              '--no-zygote',
-              '--single-process',
-              "--proxy-server='direct://'",
-              '--proxy-bypass-list=*',
-              '--deterministic-fetch',
-            ],
-          };
+          headless: true,
+          args: [
+            // "--disable-gpu",
+            // "--disable-dev-shm-usage",
+            // "--disable-setuid-sandbox",
+              '--timeout=60000',
+            "--no-first-run",
+            "--no-sandbox",
+            // "--no-zygote",
+            // "--single-process",
+            // "--proxy-server='direct://'",
+            // "--proxy-bypass-list=*",
+            // "--deterministic-fetch"
+          ]
+        };
 
         const browser = await puppeteer.launch(PUPPETEER_OPTIONS);
         const page = await browser.newPage();
         await page.setUserAgent(
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36'
-          );
+          "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/69.0.3497.100 Safari/537.36"
+        );
         await page.goto("https://www.facebook.com/pg/KashuNamaadhuMV/photos");
 
         const photos = await page.evaluate(() => {
@@ -70,6 +70,7 @@ exports.subscribe = async pubsubMessage => {
 
     const downloadImg = async (options = {}) => {
       try {
+          console.log(options)
         const { filename } = await download.image(options);
         const tempLocalPath = `/tmp/${path.basename(filename)}`;
         const bucketName = "processed_kashunamaadhu";
@@ -96,8 +97,9 @@ exports.subscribe = async pubsubMessage => {
     };
 
     const downloadAll = async () => {
+      console.log("Scraping started");
       const imgs = await scrapeImgUrls();
-
+      console.log("Scraping completed");
       try {
         await Promise.all(
           imgs.map(async file => {
