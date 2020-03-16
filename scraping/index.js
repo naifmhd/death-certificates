@@ -3,7 +3,8 @@ const download = require("image-downloader");
 const path = require("path");
 const fs = require("fs");
 const { promisify } = require("util");
-const { storage } = require("@google-cloud/storage");
+const { Storage } = require("@google-cloud/storage");
+const storage = new Storage();
 exports.subscribe = async pubsubMessage => {
   // Print out the data from Pub/Sub, to prove that it worked
   try {
