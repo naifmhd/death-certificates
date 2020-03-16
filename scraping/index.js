@@ -78,16 +78,11 @@ exports.subscribe = async pubsubMessage => {
         const bucket = storage.bucket(bucketName);
 
         // Upload the Blurred image back into the bucket.
-        console.log('filename')
-        console.log(filename)
-        console.log(tempLocalPath)
-        const temp = filename.split('/');
-        const lastItem = temp[temp.length - 1]
-        console.log(lastItem)
-        const gcsPath = `gs://${bucketName}/${filename}`;
+        const tempname = filename.split('/');
+        const name = tempname[tempname.length - 1]
+        const gcsPath = `gs://${bucketName}/${name}`;
         try {
-          await bucket.upload(tempLocalPath, { destination: filename });
-          await bucket.upload(tempLocalPath, { destination: lastItem });
+          await bucket.upload(tempLocalPath, { destination: name });
           console.log(`Uploaded image to: ${gcsPath}`);
         } catch (err) {
           throw new Error(`Unable to upload image to ${gcsPath}: ${err}`);
